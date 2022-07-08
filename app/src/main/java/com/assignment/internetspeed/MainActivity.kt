@@ -5,17 +5,16 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
-import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.assignment.internetspeed.broadcastReceiver.RestartInternetSpeedService
 import com.assignment.internetspeed.databinding.ActivityMainBinding
 import com.assignment.internetspeed.notification.InternetSpeedNotification
 import com.assignment.internetspeed.services.InternetSpeedService
-import com.assignment.internetspeed.utils.InternetSpeedUtils
 import com.assignment.internetspeed.viewmodel.InternetSpeedViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -63,5 +62,15 @@ class MainActivity : AppCompatActivity() {
         Intent(this, InternetSpeedService::class.java).also { intent ->
             bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
+    }
+
+    override fun onDestroy() {
+
+        val broadcastIntent = Intent()
+        broadcastIntent.action = "Restart"
+        broadcastIntent.setClass(this, RestartInternetSpeedService::class.java)
+        this.sendBroadcast(broadcastIntent)
+        super.onDestroy()
+
     }
 }

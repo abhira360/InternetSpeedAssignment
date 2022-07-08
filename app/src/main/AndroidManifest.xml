@@ -25,6 +25,12 @@
             </intent-filter>
         </activity>
 
+        <receiver android:name=".broadcastReceiver.RestartInternetSpeedService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="Restart"/>
+            </intent-filter>
+        </receiver>
         <service android:name=".services.InternetSpeedService"/>
     </application>
 
